@@ -73,7 +73,7 @@ jobs:
         id: meta-backend
         uses: docker/metadata-action@v4
         with:
-          images: ghcr.io/${{ env.REPO_NAME }}/wuda-backend:latest
+          images: ghcr.io/${{ env.REPO_NAME }}/wuda-backend
       - name: Build and push backend image
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         with:
@@ -85,7 +85,7 @@ jobs:
         id: meta-frontend
         uses: docker/metadata-action@v4
         with:
-          images: ghcr.io/${{ env.REPO_NAME }}/wuda-frontend:latest
+          images: ghcr.io/${{ env.REPO_NAME }}/wuda-frontend
       - name: Build and push frontend image
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         with:
