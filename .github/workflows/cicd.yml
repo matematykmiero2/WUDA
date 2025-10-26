@@ -1,6 +1,10 @@
 name: CI/CD Pipeline
 
-on: [push]
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
 
 jobs:
   tests:
@@ -94,26 +98,28 @@ jobs:
           password: ${{ secrets.GH_TOKEN }}
 
       #https://docs.github.com/en/actions/tutorials/publish-packages/publish-docker-images
-      - name: Extract metadata for backend
-        id: meta-backend
-        uses: docker/metadata-action@v4
-        with:
-          images: ghcr.io/${{ env.REPO_NAME }}/wuda-backend
+      # - name: Extract metadata for backend
+      #   id: meta-backend
+      #   uses: docker/metadata-action@v4
+      #   with:
+      #     images: ghcr.io/${{ env.REPO_NAME }}/wuda-backend
       - name: Build and push backend image
         uses: docker/build-push-action@v4
         with:
           context: ./back-end
           push: true
-          tags: ${{ steps.meta-backend.outputs.tags }}
-      - name: Extract metadata for frontend
-        id: meta-frontend
-        uses: docker/metadata-action@v4
-        with:
-          images: ghcr.io/${{ env.REPO_NAME }}/wuda-frontend
+          #tags: ${{ steps.meta-backend.outputs.tags }}
+          tags: ghcr.io/${{ env.REPO_NAME }}/wuda-backend:latest
+      # - name: Extract metadata for frontend
+      #   id: meta-frontend
+      #   uses: docker/metadata-action@v4
+      #   with:
+      #     images: ghcr.io/${{ env.REPO_NAME }}/wuda-frontend
       - name: Build and push frontend image
         uses: docker/build-push-action@v4
         with:
           context: ./front-end
           push: true
-          tags: ${{ steps.meta-frontend.outputs.tags }}
+          # tags: ${{ steps.meta-frontend.outputs.tags }}
+          tags: ghcr.io/${{ env.REPO_NAME }}/wuda-frontend:latest
 
