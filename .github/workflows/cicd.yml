@@ -60,6 +60,7 @@ jobs:
 
   GHRC:
     name: Build and Push Docker Images
+    needs: tests
     runs-on: ubuntu-latest
     env:
       POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
