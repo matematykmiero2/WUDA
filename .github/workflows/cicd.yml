@@ -108,6 +108,7 @@ jobs:
         with:
           context: ./back-end
           push: true
+          no-cache: true
           #tags: ${{ steps.meta-backend.outputs.tags }}
           tags: ghcr.io/${{ env.REPO_NAME }}/wuda-backend:latest
       # - name: Extract metadata for frontend
@@ -120,6 +121,7 @@ jobs:
         with:
           context: ./front-end
           push: true
+          no-cache: true
           # tags: ${{ steps.meta-frontend.outputs.tags }}
           tags: ghcr.io/${{ env.REPO_NAME }}/wuda-frontend:latest
 
