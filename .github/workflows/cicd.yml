@@ -59,6 +59,7 @@ jobs:
         continue-on-error: true
 
   GHRC:
+    name: Build and Push Docker Images
     runs-on: ubuntu-latest
     env:
       POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
@@ -95,7 +96,7 @@ jobs:
         with:
           images: ghcr.io/${{ env.REPO_NAME }}/wuda-backend
       - name: Build and push backend image
-        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        uses: docker/build-push-action@v4
         with:
           context: ./back-end
           push: true
@@ -106,7 +107,7 @@ jobs:
         with:
           images: ghcr.io/${{ env.REPO_NAME }}/wuda-frontend
       - name: Build and push frontend image
-        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        uses: docker/build-push-action@v4
         with:
           context: ./front-end
           push: true
