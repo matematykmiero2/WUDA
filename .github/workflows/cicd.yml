@@ -17,6 +17,9 @@ jobs:
       BACKEND_PORT: ${{ secrets.BACKEND_PORT }}
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
       SERVER_PORT: ${{ secrets.SERVER_PORT }}
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Get code
         uses: actions/checkout@v5
