@@ -65,12 +65,15 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GH_TOKEN }}
+  
+      - name: Add lowercase repo name to GITHUB_ENV
+        run: echo "REPO_NAME=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
       #https://docs.github.com/en/actions/tutorials/publish-packages/publish-docker-images
       - name: Extract metadata for backend
         id: meta-backend
         uses: docker/metadata-action@v4
         with:
-          images: ghcr.io/${{ github.repository_owner }}/wuda-backend
+          images: ghcr.io/${{ env.REPO_NAME }}/wuda-backend:latest
       - name: Build and push backend image
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         with:
@@ -82,7 +85,7 @@ jobs:
         id: meta-frontend
         uses: docker/metadata-action@v4
         with:
-          images: ghcr.io/${{ github.repository_owner }}/wuda-frontend
+          images: ghcr.io/${{ env.REPO_NAME }}/wuda-frontend:latest
       - name: Build and push frontend image
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         with:
