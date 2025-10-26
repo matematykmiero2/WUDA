@@ -5,5 +5,35 @@ services:
       POSTGRES_PASSWORD: alamakota
       POSTGRES_USER: board_games
       POSTGRES_DB: games
+    volumes:
+      - postgres_store_data:/var/lib/postgresql/data
     ports:
       - 5432:5432
+  backend:
+    build: ./back-end
+    environment:
+      POSTGRES_DB: games
+      POSTGRES_USER: board_games
+      POSTGRES_PASSWORD: alamakota
+      POSTGRES_HOST: postgres
+      APP_PORT: 5000
+      JWT_KEY: your_secret_jwt_key
+      APP_HOST: 0.0.0.0
+    ports:
+      - 5000:5000
+    depends_on:
+      - postgres
+  frontend:
+    build: ./front-end
+    environment:
+      BACKEND_HOSTNAME: backend
+      BACKEND_PORT: 5000
+      SECRET_KEY: your_secret_jwt_key
+      APP_HOST: 0.0.0.0
+      SERVER_PORT: 8000
+    ports:
+      - 8000:8000
+    depends_on:
+      - backend
+volumes:
+  postgres_store_data:
