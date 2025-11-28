@@ -2,10 +2,10 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ "master" ]
+    branches: ["master"]
   pull_request:
-    branches: [ "master" ]
-
+    branches: ["master"]
+  workflow_dispatch:
 jobs:
   tests:
     runs-on: ubuntu-latest
@@ -27,7 +27,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.x"
+          python-version: "3.13"
           architecture: "x64"
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v4
@@ -121,4 +121,3 @@ jobs:
           context: ./front-end
           push: true
           tags: ${{ steps.meta-frontend.outputs.tags }}
-          

@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.appName }}-frontend
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.appName }}-frontend
+spec:
+  replicas: {{ .Values.frontend.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.appName }}-frontend
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.appName }}-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: "{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.frontend.service.port }}
+          env:
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.appName }}-secrets
+                  key: secretKey
+            - name: BACKEND_PORT
+              value: "{{ .Values.frontend.env.backend.port }}"
+            - name: BACKEND_HOST
+              value: "{{ .Values.appName }}-backend"
+          # to coś rozpie****A
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: {{ .Values.frontend.service.port }}
+          #   initialDelaySeconds: 25
+          #   periodSeconds: 25
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: {{ .Values.frontend.service.port }}
+          #   initialDelaySeconds: 25
+          #   periodSeconds: 25
