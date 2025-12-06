@@ -31,9 +31,9 @@ postgres:
     repository: postgres
     tag: latest
   service:
-    type: LoadBalancer
+    type: ClusterIP
     port: 5432
   env:
-    db: your_database_name
-    user: your_database_user
-    password: your_database_password
+    db: games
+    user: board_games
+    password: alamakota

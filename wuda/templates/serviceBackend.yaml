@@ -8,5 +8,6 @@ spec:
   selector:
     app: {{ .Values.appName }}-backend
   ports:
-    - port: {{ .Values.backend.service.port }}
+    - protocol: TCP
+      port: {{ .Values.backend.service.port }}
       targetPort: {{ .Values.backend.service.port }}

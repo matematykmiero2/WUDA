@@ -30,16 +30,15 @@ spec:
               value: "{{ .Values.frontend.env.backend.port }}"
             - name: BACKEND_HOST
               value: "{{ .Values.appName }}-backend"
-          # to coś rozpie****A
-          # livenessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: {{ .Values.frontend.service.port }}
-          #   initialDelaySeconds: 25
-          #   periodSeconds: 25
-          # readinessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: {{ .Values.frontend.service.port }}
-          #   initialDelaySeconds: 25
-          #   periodSeconds: 25
+          livenessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.frontend.service.port }}
+            initialDelaySeconds: 5
+            periodSeconds: 25
+          readinessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.frontend.service.port }}
+            initialDelaySeconds: 5
+            periodSeconds: 25

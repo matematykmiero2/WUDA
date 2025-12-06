@@ -19,9 +19,11 @@ def init_db():
 def check_database():
     try:
         session = SessionLocal()
-        session.execute("SELECT 1")
+        session.execute(text("SELECT 1"))
+        session.close()
         return True
-    except Exception:
+    except Exception as e:
+        LOGGER.error(f"Readiness probe failed: {e}")
         return False
 
 def load_data():

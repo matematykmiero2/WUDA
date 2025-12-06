@@ -36,6 +36,8 @@ spec:
                 - pg_isready
                 - -U
                 - "{{ .Values.postgres.env.user }}"
+                - -d
+                - "{{ .Values.postgres.env.db }}"
             initialDelaySeconds: 5
             periodSeconds: 5
           readinessProbe:
@@ -44,5 +46,7 @@ spec:
                 - pg_isready
                 - -U
                 - "{{ .Values.postgres.env.user }}"
+                - -d
+                - "{{ .Values.postgres.env.db }}"
             initialDelaySeconds: 5
             periodSeconds: 5

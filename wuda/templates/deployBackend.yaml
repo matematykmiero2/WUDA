@@ -36,7 +36,9 @@ spec:
                   name: {{ .Values.appName }}-secrets
                   key: dbPassword
             - name: POSTGRES_HOST
-              value: "postgres"
+              value: "{{ .Values.appName }}-postgres"
+            - name: POSTGRES_PORT
+              value: "{{ .Values.postgres.service.port | default 5432 }}"
             - name: APP_PORT
               valueFrom:
                 configMapKeyRef:
@@ -44,16 +46,15 @@ spec:
                   key: BACKEND_PORT
             - name: APP_HOST
               value: "0.0.0.0"
-          # to coś rozpie****A niby sie wrzuca ale...
-          # livenessProbe:
-          #   httpGet:
-          #     path: /liveness
-          #     port: {{ .Values.backend.service.port }}
-          #   initialDelaySeconds: 25
-          #   periodSeconds: 50
-          # readinessProbe:
-          #   httpGet:
-          #     path: /readiness
-          #     port: {{ .Values.backend.service.port }}
-          #   initialDelaySeconds: 25
-          #   periodSeconds: 50
+          livenessProbe:
+            httpGet:
+              path: /liveness
+              port: {{ .Values.backend.service.port }}
+            initialDelaySeconds: 25
+            periodSeconds: 50
+          readinessProbe:
+            httpGet:
+              path: /readiness
+              port: {{ .Values.backend.service.port }}
+            initialDelaySeconds: 25
+            periodSeconds: 50
