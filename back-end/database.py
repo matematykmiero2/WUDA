@@ -16,10 +16,11 @@ def init_db():
     except Exception as e:
         LOGGER.error(f"Database did not manage to connect: {e}")
 
-def check_database() -> bool:
+def check_database():
     try:
-        with SessionLocal() as session:
-            session.execute(text("SELECT 1"))
+        session = SessionLocal()
+        session.execute(text("SELECT 1"))
+        session.close()
         return True
     except Exception as e:
         LOGGER.error(f"Readiness probe failed: {e}")
