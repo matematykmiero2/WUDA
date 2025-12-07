@@ -21,6 +21,10 @@ spec:
           ports:
             - containerPort: {{ .Values.frontend.service.port }}
           env:
+            - name: APP_PORT
+              value: "{{ .Values.frontend.service.port }}"
+            - name: APP_HOST
+              value: "0.0.0.0"
             - name: SECRET_KEY
               valueFrom:
                 secretKeyRef:
@@ -28,17 +32,18 @@ spec:
                   key: secretKey
             - name: BACKEND_PORT
               value: "{{ .Values.frontend.env.backend.port }}"
-            - name: BACKEND_HOST
+            - name: BACKEND_HOSTNAME
               value: "{{ .Values.appName }}-backend"
           livenessProbe:
             httpGet:
               path: /
               port: {{ .Values.frontend.service.port }}
-            initialDelaySeconds: 5
-            periodSeconds: 25
+            initialDelaySeconds: 30
+            periodSeconds: 10
           readinessProbe:
             httpGet:
               path: /
               port: {{ .Values.frontend.service.port }}
-            initialDelaySeconds: 5
-            periodSeconds: 25
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            

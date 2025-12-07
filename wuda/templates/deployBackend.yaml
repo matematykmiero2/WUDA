@@ -69,5 +69,5 @@ spec:
             httpGet:
               path: /readiness
               port: {{ .Values.backend.service.port }}
-            initialDelaySeconds: 80
+            initialDelaySeconds: 25
             periodSeconds: 50
