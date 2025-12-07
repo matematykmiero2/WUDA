@@ -1,29 +1,30 @@
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker, scoped_session
 from settings import DATABASE_URL
-from models import Game
+from models import Game, Base
 from logger import LOGGER
 
 engine = create_engine(DATABASE_URL, echo=True, future=True)
 SessionLocal = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
-def init_db():
-    import models
-  # importujemy modele, żeby Base je zarejestrowało
-    try:
-      models.Base.metadata.create_all(bind=engine)
-      load_data()
-    except :
-      LOGGER.error("Database did not manage to connect. Endpoints besides liveness will not work")
 
+def init_db():
+
+    try:
+        Base.metadata.create_all(bind=engine)
+        load_data()
+        LOGGER.info("Database initialized successfully")
+    except Exception as e:
+        LOGGER.error(f"Database did not manage to connect: {e}")
 
 def check_database():
     try:
         session = SessionLocal()
-        session.execute("SELECT 1")
+        session.execute(text("SELECT 1"))
+        session.close()
         return True
-    except Exception:
+    except Exception as e:
+        LOGGER.error(f"Readiness probe failed: {e}")
         return False
-
 def load_data():
     session = SessionLocal()
     if session.query(Game).count() == 0:

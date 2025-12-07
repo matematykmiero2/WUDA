@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.appName }}-postgres
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.appName }}-postgres
+spec:
+  replicas: {{ .Values.postgres.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.appName }}-postgres
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.appName }}-postgres
+    spec:
+      containers:
+        - name: postgres
+          image: "{{ .Values.postgres.image.repository }}:{{ .Values.postgres.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.postgres.service.port }}
+          env:
+            - name: POSTGRES_DB
+              value: "{{ .Values.postgres.env.db }}"
+            - name: POSTGRES_USER
+              value: "{{ .Values.postgres.env.user }}"
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.appName }}-secrets
+                  key: dbPassword
+          livenessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -U
+                - "{{ .Values.postgres.env.user }}"
+                - -d
+                - "{{ .Values.postgres.env.db }}"
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          readinessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -U
+                - "{{ .Values.postgres.env.user }}"
+                - -d
+                - "{{ .Values.postgres.env.db }}"
+            initialDelaySeconds: 5
+            periodSeconds: 5

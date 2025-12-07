@@ -1,0 +1,39 @@
+appName: wuda
+namespace: okon
+
+backend:
+  replicaCount: 1
+  image:
+    repository: ghcr.io/matematykmiero2/wuda/wuda-backend
+    tag: helm
+  service:
+    type: LoadBalancer
+    port: 5000
+  env:
+    jwtKey: your_secret_jwt_key
+
+frontend:
+  replicaCount: 1
+  image:
+    repository: ghcr.io/matematykmiero2/wuda/wuda-frontend
+    tag: helm
+  service:
+    type: LoadBalancer
+    port: 8000
+  env:
+    backend:
+      port: 5000
+    secretKey: your_secret_jwt_key
+postgres:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: postgres
+    tag: latest
+  service:
+    type: ClusterIP
+    port: 5432
+  env:
+    db: games
+    user: board_games
+    password: alamakota
